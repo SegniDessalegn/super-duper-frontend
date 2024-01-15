@@ -40,7 +40,7 @@ const animeSlice = createSlice({
         console.log(recieved, typeof(recieved), recieved[0])
         let new_anime = []
 
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 25; i++) {
           new_anime.push({
             rank: recieved[i].rank,
             title: recieved[i].title,

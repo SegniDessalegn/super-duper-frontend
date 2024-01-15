@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTopAnime } from './state/anime/animesSlice';
 import { AppDispatch, RootState } from './state/store';
+import TopAnimes from './componenets/topAnimes';
 
 import './App.css';
 
@@ -29,17 +30,7 @@ function App() {
 
   return (
     <div>
-      <h1>Top Anime</h1>
-      {status}
-      <ul>
-        {data.map((anime) => (
-          <li key={anime.rank}>
-            <p>Rank: {anime.rank}</p>
-            <p>Title: {anime.title}</p>
-            <img src={anime.image_url} alt={anime.title} />
-          </li>
-        ))}
-      </ul>
+      <TopAnimes />
     </div>
   );
 }
