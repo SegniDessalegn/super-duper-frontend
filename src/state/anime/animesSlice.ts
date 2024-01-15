@@ -1,11 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
-
-interface Anime {
-  rank: number;
-  title: string;
-  image_url: string;
-}
+import Anime from '../../types/anime';
 
 interface AnimeState {
   data: Anime[];
@@ -37,23 +32,23 @@ const animeSlice = createSlice({
         state.status = 'succeeded';
         let recieved = action.payload
 
-        console.log(recieved, typeof(recieved), recieved[0])
-        let new_anime = []
+        let new_animes = []
 
         for (let i = 0; i < 25; i++) {
-          new_anime.push({
+          new_animes.push({
             rank: recieved[i].rank,
             title: recieved[i].title,
             image_url: recieved[i].images.jpg.image_url,
+            release: recieved[i].year,
+            rating: recieved[i].rating,
+            latest: recieved[i].broadcast.string,
+            airing: recieved[i].airing,
           })
         }
-        // state.data = action.payload.map((anime: any) => ({
-        //   rank: anime.rank,
-        //   title: anime.title,
-        //   image_url: anime.image_url,
-        // }));
 
-        state.data = new_anime
+        new_animes.sort((a, b) => a.rank - b.rank);
+
+        state.data = new_animes
       })
       // .addCase(fetchTopAnime.rejected, (state, action) => {
       //   state.status = 'failed';
