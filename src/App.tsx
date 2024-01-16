@@ -4,6 +4,7 @@ import { fetchTopAnime } from './state/anime/animesSlice';
 import { AppDispatch, RootState } from './state/store';
 import TopAnimes from './componenets/topAnimes';
 import AreaChart from './componenets/areaChart';
+import Spinner from './componenets/spinner';
 
 import './App.css';
 
@@ -22,7 +23,11 @@ function App() {
   }, [dispatch, status]);
 
   if (status === 'loading') {
-    return <div>Loading...</div>;
+    return (
+      <div className="h-[100vh] w-full flex justify-center items-center">
+          <Spinner />
+      </div>
+    );
   }
 
   if (status === 'failed') {

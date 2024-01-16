@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchTopAnime } from '../state/anime/animesSlice';
 import { AppDispatch, RootState } from '../state/store';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import Spinner from './spinner';
 
 const AreaChartComponent: React.FC = (): ReactElement => {
   const dispatch = useDispatch<AppDispatch>();
@@ -43,7 +44,6 @@ const AreaChartComponent: React.FC = (): ReactElement => {
 
   return (
     <div className="bg-gray-200 pt-5 flex flex-col items-center">
-        <div className="font-bold text-xl my-10">Chart</div>
         <div className="flex justify-center">
         {chartData && chartData.length > 0 && (
             <AreaChart width={600} height={400} data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
