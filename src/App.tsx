@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchTopAnime } from './state/anime/animesSlice';
 import { AppDispatch, RootState } from './state/store';
 import TopAnimes from './componenets/topAnimes';
+import AreaChart from './componenets/areaChart';
 
 import './App.css';
 
@@ -31,6 +32,7 @@ function App() {
   return (
     <div>
       <TopAnimes />
+      <AreaChart />
     </div>
   );
 }
