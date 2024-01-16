@@ -12,11 +12,28 @@ import {
   Legend,
 } from "recharts";
 
+// CustomTooltip component for the Tooltip content
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    const year = label;
+    const animeNames: string[] = payload[0].payload.animeNames;
+
+    return (
+      <div className="custom-tooltip bg-white border-2 border-red-500 rounded-lg p-5 flex flex-col justify-center items-center">
+        <p className="label font-bold">{year}</p>
+        {animeNames.map((animeName: string) => (
+          <p key={animeName}>{animeName}</p>
+        ))}
+      </div>
+    );
+  }
+
+  return null;
+};
+
 const AreaChartComponent: React.FC = (): ReactElement => {
   const dispatch = useDispatch<AppDispatch>();
-  const { data, status, error } = useSelector(
-    (state: RootState) => state.anime,
-  );
+  const { data, status } = useSelector((state: RootState) => state.anime);
 
   useEffect(() => {
     const fetchAnime = async () => {
@@ -41,13 +58,34 @@ const AreaChartComponent: React.FC = (): ReactElement => {
     }
   }
 
-  let chartData: { year: number; count: number }[] = [];
+  let chartData: { year: number; count: number; animeNames: string[] }[] = [];
 
   for (const [key, value] of Object.entries(animesCount)) {
-    chartData.push({ year: parseInt(key), count: value });
+    chartData.push({
+      year: parseInt(key),
+      count: value,
+      animeNames: [],
+    });
   }
 
-  chartData = [...chartData.filter((anime) => !Number.isNaN(anime.year))];
+  chartData = chartData.filter((anime) => !Number.isNaN(anime.year));
+
+  // Build an object containing anime names for each year
+  const animeNamesByYear: { [year: number]: string[] } = {};
+  data.forEach((anime) => {
+    const year = anime.release;
+    if (year && animeNamesByYear[year]) {
+      animeNamesByYear[year].push(anime.title);
+    } else if (year) {
+      animeNamesByYear[year] = [anime.title];
+    }
+  });
+
+  // Update chartData to include animeNames
+  chartData.forEach((item) => {
+    const year = item.year;
+    item.animeNames = animeNamesByYear[year] || [];
+  });
 
   return (
     <div className="bg-gray-200 pt-5 flex flex-col items-center">
@@ -59,16 +97,22 @@ const AreaChartComponent: React.FC = (): ReactElement => {
             data={chartData}
             margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
           >
+            <defs>
+              <linearGradient id="colorGradient" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="5%" stopColor="#0eb5a4" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="#114f54" stopOpacity={0.8} />
+              </linearGradient>
+            </defs>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="year" />
             <YAxis />
-            <Tooltip />
+            <Tooltip content={<CustomTooltip />} />
             <Legend />
             <Area
               type="monotone"
               dataKey="count"
               stroke="#8884d8"
-              fill="#8884d8"
+              fill="url(#colorGradient)"
             />
           </AreaChart>
         )}
