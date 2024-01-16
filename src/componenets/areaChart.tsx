@@ -1,4 +1,4 @@
-import React, { useEffect, ReactElement } from "react";
+import React, { useEffect, useState, ReactElement } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTopAnime } from "../state/anime/animesSlice";
 import { AppDispatch, RootState } from "../state/store";
@@ -34,6 +34,19 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 const AreaChartComponent: React.FC = (): ReactElement => {
   const dispatch = useDispatch<AppDispatch>();
   const { data, status } = useSelector((state: RootState) => state.anime);
+  const [chartWidth, setChartWidth] = useState(window.innerWidth * 0.8);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setChartWidth(window.innerWidth * 0.8);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchAnime = async () => {
@@ -88,11 +101,11 @@ const AreaChartComponent: React.FC = (): ReactElement => {
   });
 
   return (
-    <div className="bg-gray-200 pt-5 flex flex-col items-center">
+    <div className="pt-5 flex flex-col items-center">
       <div className="flex justify-center">
         {chartData && chartData.length > 0 && (
           <AreaChart
-            width={600}
+            width={chartWidth}
             height={400}
             data={chartData}
             margin={{ top: 20, right: 30, left: 20, bottom: 5 }}

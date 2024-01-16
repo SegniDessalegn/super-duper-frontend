@@ -37,7 +37,7 @@ function App() {
   }
 
   return (
-    <div>
+    <div className="bg-gray-200 flex flex-col gap-20">
       <TopAnimes />
       <AreaChart />
     </div>

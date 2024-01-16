@@ -20,7 +20,7 @@ const TopAnimes: React.FC = (): ReactElement => {
   }, [dispatch, status]);
 
   return (
-    <div className="bg-gray-200 pt-5">
+    <div className="pt-5">
       <div className="flex justify-center items-center flex-wrap gap-5">
         {data.map((anime) => (
           <div
