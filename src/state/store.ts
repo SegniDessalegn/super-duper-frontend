@@ -1,5 +1,5 @@
-import { configureStore } from '@reduxjs/toolkit';
-import animeReducer from './anime/animesSlice';
+import { configureStore } from "@reduxjs/toolkit";
+import animeReducer from "./anime/animesSlice";
 
 const store = configureStore({
   reducer: {

@@ -1,20 +1,22 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchTopAnime } from './state/anime/animesSlice';
-import { AppDispatch, RootState } from './state/store';
-import TopAnimes from './componenets/topAnimes';
-import AreaChart from './componenets/areaChart';
-import Spinner from './componenets/spinner';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTopAnime } from "./state/anime/animesSlice";
+import { AppDispatch, RootState } from "./state/store";
+import TopAnimes from "./componenets/topAnimes";
+import AreaChart from "./componenets/areaChart";
+import Spinner from "./componenets/spinner";
 
-import './App.css';
+import "./App.css";
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
-  const { data, status, error } = useSelector((state: RootState) => state.anime);
+  const { data, status, error } = useSelector(
+    (state: RootState) => state.anime,
+  );
 
   useEffect(() => {
     const fetchAnime = async () => {
-      if (status === 'idle') {
+      if (status === "idle") {
         await dispatch(fetchTopAnime());
       }
     };
@@ -22,15 +24,15 @@ function App() {
     fetchAnime();
   }, [dispatch, status]);
 
-  if (status === 'loading') {
+  if (status === "loading") {
     return (
       <div className="h-[100vh] w-full flex justify-center items-center">
-          <Spinner />
+        <Spinner />
       </div>
     );
   }
 
-  if (status === 'failed') {
+  if (status === "failed") {
     return <div>Error: {error}</div>;
   }
 
